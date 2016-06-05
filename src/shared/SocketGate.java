@@ -13,6 +13,7 @@ public class SocketGate extends ListenerThread {
     private InetAddress playerListeningGroup;
     private InetAddress gameListeningGroup;
     private InetAddress chatListeningGroup;
+    private InetAddress cardListeningGroup;
 
     private MulticastSocket socket;
 
@@ -23,11 +24,20 @@ public class SocketGate extends ListenerThread {
         playerListeningGroup = InetAddress.getByName(Constants.PlayerListeningGroup);
         gameListeningGroup = InetAddress.getByName(Constants.GameListeningGroup);
         chatListeningGroup = InetAddress.getByName(Constants.ChatListeningGroup);
+        cardListeningGroup = InetAddress.getByName(Constants.CardListeningGroup);
 	}
 
 
     public void sendBall(Ball b) {
         sendBytes(b.getBytes(), ballListeningGroup);
+    }
+    
+    public void sendCard(Card c) {
+        sendBytes(c.getBytes(), ballListeningGroup);
+    }
+    
+    public void sendCardMessage(String msg) {
+        sendBytes(msg.getBytes(), cardListeningGroup);
     }
 
     public void sendPlayerStatusMessage(PlayerRecord p) {

@@ -77,7 +77,7 @@ public class Ball implements Constants  {
     }
 
     public byte[] getBytes() {
-	byte[] answer = { (byte)number };
+	byte[] answer = {(byte)number };
 	return answer;
     }
     public int getNumber() {

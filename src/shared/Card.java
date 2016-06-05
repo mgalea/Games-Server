@@ -98,5 +98,11 @@ public class Card {
      return getValueAsString() + " of " + getSuitAsString();
  }
 
+ public byte[] getBytes() {
+	char[] card = (getValueAsString() + " of " + getSuitAsString()).toCharArray() ;
+	byte[] answer=new String(card).getBytes();
+	return answer;
+    }
+
 
 } // end class Card

@@ -68,7 +68,6 @@ public class Game extends Thread implements Constants,States {
 			
 		serverSockets.sendGameStatusMessage("Starting Game ID:"+gameID);
 		
-		serverSockets=null;
    
 		gameState = READY;
 		
@@ -110,7 +109,8 @@ public class Game extends Thread implements Constants,States {
 		public void setGameOver() {
 			Messages.info("GAME OVER ID:"+Long.toString(gameID));
 	  		gameLog.save(Utilities.dateTimeStamp()+ " GAME OVER ID:"+Long.toString(gameID));
-			this.gameInProgress=false;
+	  		serverSockets.sendGameStatusMessage("GAME OVER ID:"+gameID);
+	  		this.gameInProgress=false;
 			
 		}
 

@@ -35,7 +35,7 @@ class ShowCard extends Thread implements Constants {
              
         try
         {
-        	serverSockets=new SocketGate(Constants.CardListeningGroup);
+        	serverSockets=new SocketGate(Constants.BallListeningGroup);
         }catch (IOException e){
         	e.printStackTrace();
         }            
@@ -60,7 +60,7 @@ class ShowCard extends Thread implements Constants {
 	        }
 	    }
 	    try {
-		wait(FIVE_SECONDS);
+		wait(HALF_SECOND);
 	    } catch (InterruptedException e) { }
         }
     }
@@ -74,7 +74,7 @@ class ShowCard extends Thread implements Constants {
 		synchronized (getClass()){
 			//Messages.info("GAME ID:"+Long.toString(game.gameID)+" CARD: "+next.toString());
 			cardLog.save(Utilities.dateTimeStamp()+","+Long.toString(game.gameID)+ ","+round+","+ next.toString() );
-			serverSockets.sendGameStatusMessage("ID:"+Long.toString(game.gameID)+" CARD:"+ next.toString());
+			serverSockets.sendCardMessage("ID:"+Long.toString(game.gameID)+ " ROUND: "+round+" "+" CARD:"+ next.toString());
 			
 		     // create  card dataset
 	        card = new JsonObject();
@@ -90,7 +90,7 @@ class ShowCard extends Thread implements Constants {
 		synchronized (getClass()){
 			Messages.info("GAME ID:"+Long.toString(game.gameID)+" CARD: "+next.toString());
 			cardLog.save(Utilities.dateTimeStamp()+","+Long.toString(game.gameID)+ ","+ next.toString());
-			serverSockets.sendGameStatusMessage("ID:"+Long.toString(game.gameID)+" CARD:"+ next.toString());
+			serverSockets.sendCardMessage("ID:"+Long.toString(game.gameID)+" CARD:"+ next.toString());
 		}
 
 	}
