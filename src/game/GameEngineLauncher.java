@@ -1,5 +1,7 @@
 package game;
 
+import java.io.IOException;
+
 import shared.*;
 import shared.GAME_TYPE;
 
@@ -12,25 +14,26 @@ public class GameEngineLauncher extends Thread implements Constants,States{
 	BallAnnouncer ballAnnounce;
 	ShowCard showCard;
 
-	    GameEngineLauncher(GAME_TYPE game) {
+	 public GameEngineLauncher(GAME_TYPE game) {
 	        super(game.toString());
 	        this.gametype=game;
+	        
 	    }
 	    
 	    GameEngineLauncher(GAME_TYPE game,int i) {
 	        super(game.toString()+": "+Integer.toString(i));
-	        this.gametype=game;
-	     
+	        this.gametype=game;	     
 	    }
+	        
 	    	    
 	    public synchronized void run() {	    	
 
-	    	for(;;){
 	    		
 	    		switch(gametype){
 	    		
 	    		case BINGO90:
 		    		game=new Game(GAME_TYPE.BINGO90);
+		    		
 		    		break;
 		    		
 	    		case BINGO75:
@@ -53,6 +56,13 @@ public class GameEngineLauncher extends Thread implements Constants,States{
 					break;
 	    		
 	    		}
+	    		
+	    		try {
+					GameStatusWindow gameWindow=new GameStatusWindow(game);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     		
 	    		if(game.gameState==READY) {
 	    			switch(gametype){
@@ -61,6 +71,7 @@ public class GameEngineLauncher extends Thread implements Constants,States{
 		    			showCard=new ShowCard(game);
 		    			showCard.start();
 			    		break;
+			    		
 			    		
 			    	default:	
 		    			ballAnnounce=new BallAnnouncer(game);
@@ -72,14 +83,8 @@ public class GameEngineLauncher extends Thread implements Constants,States{
 	    			
 	    		}else game=null;
 	    		
-		
-	    	//System.out.println(gameEventSetting.toString());
-	    	
-		    try {
-			wait(SEVEN_SECONDS);
-		    } catch (InterruptedException e) { }
-	    	}
 	    }
-	    }
+}
+	    
 
 	

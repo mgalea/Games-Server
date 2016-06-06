@@ -12,63 +12,99 @@ public class ControlPane extends JPanel
 			 implements ActionListener,Constants,
 				    FocusListener {
     protected static final String go = 
-	"Let the Games Begin";
+    		"Start a Bingo Game";
+    
     protected static final String stop = 
-	"No More New Games";
+    		"No More New Games";
+    
+    protected static final String nameString = 
+    		"Name of the Game:";   
+    protected static final String stakeString = 
+    		"Stake:";    
     protected static final String delayString = 
-	"Pause between balls (in seconds):";
+    		"Pause between balls (in seconds):";
+    
     protected static final String countDownString = 
-	"Countdown (in seconds):";
+    		"Countdown (in seconds):";
+    
     protected static final String maxPlayersString = 
-	"Maximum number of players:";
+    		"Maximum number of players:";
+    
     protected static final String maxCardsString = 
-	"Maximum number of cards per player:";
+    		"Maximum number of cards per player:";
+    
     protected static final String hostLabelString = 
-	"This server's hostname:";
+    		"This server's hostname:";
+    
+    protected static final String activeLabelString = 
+    		"Number of Active Games:";
 
     // PENDING: should these number things be sliders to reduce risk of typos?
     protected JTextField delayField;
     protected JTextField countDownField;
+    protected JTextField nameField;
+    protected JTextField stakeField;
     protected JTextField maxPlayersField;
     protected JTextField maxCardsField;
+    
 
     protected JButton goButton;
     protected JButton stopButton;
+    protected JButton noMoreButton;
+    
+    GameServerSettings settings;
+	static GameEngineLauncher bingoLauncher,lottoLauncher,cardLauncher;
 
-
-    public ControlPane(String hostname, GameServerSettings settings) {
+    public ControlPane(String hostname, GameServerSettings Settings) {
 	super(false);
 
-	//this.gameParameters = settings.getGameParameters();
+	this.settings=Settings;
 
 	    // create the properties fields
-        JLabel delayLabel = new JLabel(delayString, JLabel.RIGHT);
-        delayField = new JTextField(new
-	    Long(settings.getDelay()/Constants.ONE_SECOND).toString());
-        delayField.setActionCommand(delayString);
+	
+    JLabel nameLabel = new JLabel(nameString, JLabel.LEFT);
+    nameField = new JTextField(settings.getGameName());
+    nameField.setActionCommand(nameString);
+    
+    JLabel stakeLabel = new JLabel(stakeString, JLabel.LEFT);
+    stakeField = new JTextField(new Double(settings.getStake()).toString());
+    stakeField.setActionCommand(stakeString);
 
-        JLabel countDownLabel = new JLabel(countDownString, JLabel.RIGHT);
+    JLabel delayLabel = new JLabel(delayString, JLabel.LEFT);
+    delayField = new JTextField(new Long(settings.getDelay()/Constants.ONE_SECOND).toString());
+    delayField.setActionCommand(delayString);
+    
+
+        JLabel countDownLabel = new JLabel(countDownString, JLabel.LEFT);
         countDownField = new JTextField(new 
 	    Long(settings.getCountDown()/Constants.ONE_SECOND).toString());
         countDownField.setActionCommand(countDownString);
 
-        JLabel maxPlayersLabel = new JLabel(maxPlayersString, JLabel.RIGHT);
+        JLabel maxPlayersLabel = new JLabel(maxPlayersString, JLabel.LEFT);
         maxPlayersField = new JTextField(new
  	    Integer(settings.getMaxPlayers()).toString());
         maxPlayersField.setActionCommand(maxPlayersString);
 
-        JLabel maxCardsLabel = new JLabel(maxCardsString, JLabel.RIGHT);
+        JLabel maxCardsLabel = new JLabel(maxCardsString, JLabel.LEFT);
         maxCardsField = new JTextField(new
 	    Integer(settings.getMaxCards()).toString());
         maxCardsField.setActionCommand(maxCardsString);
 
-        JLabel hostLabel = new JLabel(hostLabelString, JLabel.RIGHT);
+        JLabel hostLabel = new JLabel(hostLabelString, JLabel.LEFT);
         JLabel hostNameLabel = new JLabel(hostname);
+        
+        JLabel activeLabel = new JLabel(activeLabelString, JLabel.LEFT);
+        JLabel activeGamesNameLabel = new JLabel(Integer.toString(Start.getRunningGames()));
 
 	    // create the go and stop buttons
         goButton = new JButton(go);
-	goButton.setMnemonic('g');
-	goButton.setActionCommand(go);
+        goButton.setMnemonic('g');
+        goButton.setActionCommand(go);
+	
+        noMoreButton = new JButton(go);
+		noMoreButton.setMnemonic('m');
+		noMoreButton.setActionCommand(go);
+
 
         stopButton = new JButton(stop);
 	stopButton.setMnemonic('s');
@@ -76,8 +112,15 @@ public class ControlPane extends JPanel
 	stopButton.setEnabled(false);
 
             // Register the listeners
+        nameField.addActionListener(this);
+        nameField.addFocusListener(this);
+        
+        stakeField.addActionListener(this);
+        stakeField.addFocusListener(this);
+        
         delayField.addActionListener(this);
         delayField.addFocusListener(this);
+        
         countDownField.addActionListener(this);
         countDownField.addFocusListener(this);
         maxPlayersField.addActionListener(this);
@@ -92,10 +135,17 @@ public class ControlPane extends JPanel
 	JPanel parameterPane = new JPanel(false);
 	parameterPane.setBorder(BorderFactory.createTitledBorder(
 				  BackOffice.controlPaneTitle));
+	parameterPane.setBackground(Color.GRAY);
 	GridBagLayout gridbag = new GridBagLayout();
 	parameterPane.setLayout(gridbag);
 
 	    // many rows
+	Utilities.addParameterRow(parameterPane,
+			  nameLabel,
+			  nameField);
+	Utilities.addParameterRow(parameterPane,
+			  stakeLabel,
+			  stakeField);
 	Utilities.addParameterRow(parameterPane,
 				  delayLabel,
 				  delayField);
@@ -111,10 +161,14 @@ public class ControlPane extends JPanel
 	Utilities.addParameterRow(parameterPane,
 				  hostLabel,
 				  hostNameLabel);
+	Utilities.addParameterRow(parameterPane,
+			  activeLabel,
+			activeGamesNameLabel);
 
 	JComponent[] compList = new JComponent[2];
 	compList[0] = goButton;
 	compList[1] = stopButton;
+	
 	Box buttonBox = Utilities.makeEvenlySpacedBox(compList);
 
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -124,7 +178,6 @@ public class ControlPane extends JPanel
 	add(Box.createRigidArea(new Dimension(20, 20)));
     }
 
-    //private GamesThread gamesThread = null;
 
     public void focusLost(FocusEvent e) {
 	//when a field loses the focus, generate an action event
@@ -132,6 +185,7 @@ public class ControlPane extends JPanel
 	ActionEvent event;
 
 	source = (JTextField)(e.getComponent());
+	source.setBackground(Color.WHITE);
 	source.postActionEvent();
 	//event = new ActionEvent(source,
 				//ActionEvent.ACTION_PERFORMED,
@@ -142,40 +196,61 @@ public class ControlPane extends JPanel
     }
 
     public void focusGained(FocusEvent e) {
+    	JTextField source;
+    	ActionEvent event;
+    	System.out.println("Hey");
+    	source = (JTextField)(e.getComponent());
+    	source.setBackground(Color.YELLOW);
+    	
     }
-
-    /*
+ 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == go) {
-	    if (gamesThread == null) {
-	        gamesThread = new GamesThread(ringMaster);
-	        gamesThread.start();
-	        goButton.setEnabled(false);
-	        stopButton.setEnabled(true);
-	    }
-
-        } else if (e.getActionCommand() == stop) {
-	    if (gamesThread != null) {
-	        gamesThread.noMoreGames();
-	        gamesThread = null;
-	        stopButton.setEnabled(false);
-	        goButton.setEnabled(false);
-	    }
-        } else if (e.getActionCommand() == delayString) {
-	    gameParameters.setDelay((Long.parseLong(delayField.getText()))*Constants.ONE_SECOND);
-
-        } else if (e.getActionCommand() == countDownString) {
-	    gameParameters.setCountDown((Long.parseLong(countDownField.getText()))*Constants.ONE_SECOND);
-
-        } else if (e.getActionCommand() == maxPlayersString) {
-	    gameParameters.setMaxPlayers(Integer.parseInt(maxPlayersField.getText()));
-
-        } else if (e.getActionCommand() == maxCardsString) {
-	    gameParameters.setMaxCards(Integer.parseInt(maxCardsField.getText()));
-
-        }
+    	
+        switch (e.getActionCommand()){
+        
+        case go:
+         	        
+				bingoLauncher=new GameEngineLauncher(GAME_TYPE.BINGO90);			
+				bingoLauncher.start();			          	     
+    	        stopButton.setEnabled(true);
+    	    
+        	break;
+        	
+        case stop:
+    	        Start.SetNoMoreGames();
+    	        stopButton.setEnabled(false);
+    	        goButton.setEnabled(false);
+        	break;
+        	
+        case nameString:
+    	    settings.setName(nameField.getText());    	    
+    	    break;
+    	    
+        case stakeString:
+        	settings.setStake(Double.parseDouble(stakeField.getText()));   	    
+    	    break;
+ 
+        	
+        case delayString:
+    	    settings.setDelay((Long.parseLong(delayField.getText()))*Constants.ONE_SECOND);    	    
+    	    break;
+    	    
+        case countDownString:
+        	settings.setCountDown((Long.parseLong(countDownField.getText()))*Constants.ONE_SECOND);   	    
+    	    break;
+    	    
+        case maxPlayersString:
+        	settings.setMaxPlayers(Integer.parseInt(maxPlayersField.getText()));   	    
+    	    break;
+    	    
+        case maxCardsString:
+        	settings.setMaxCards(Integer.parseInt(maxCardsField.getText()));    	    
+    	    break;
+    	    
+    	   default:
+    		   break;        	
+        }       	            	
     }
-*/
     
     public Dimension getMaximumSize() {
 	Dimension d = getPreferredSize();
@@ -183,9 +258,5 @@ public class ControlPane extends JPanel
 	return d;
     }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

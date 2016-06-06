@@ -41,7 +41,8 @@ class BallAnnouncer extends Thread  {
 	        		announceBall(game.bagOfBalls.getNext(),round++);
 
 	        } catch (NoMoreBallsException e) {
-	        	game.setGameOver(); 	        	
+	        	game.setGameOver(); 
+	        	Start.RemoveGame();
 	        }
 	    }
 	    try {

@@ -7,11 +7,15 @@ import shared.*;
 
 public class Start implements Constants {
 	
+	public static boolean canWeHaveGames=false;
+	public static int RunningGames=0;
+	public static boolean noMoreGames=true;
+	
 /* ******* GAME MANAGER PROPERTIES  *******/	
 	
 	GameServerSettings gameServerSettings = new GameServerSettings();
 	
-	static GameEngineLauncher bingoLauncher,lottoLauncher,cardLauncher;
+
 	static Scanner scan;
 	
 	
@@ -33,12 +37,9 @@ public class Start implements Constants {
 			}	
 */
 			BackOffice backOffice = new BackOffice();
+							
 			
-			for (int i = 0; i<1 ; i++){
-				
-				cardLauncher=new GameEngineLauncher(GAME_TYPE.DECK,i);			
-				cardLauncher.start();			
-			}	
+			noMoreGames=false;
 			
 			try{
 		    scan = new Scanner(System.in);
@@ -51,6 +52,31 @@ public class Start implements Constants {
 				scan.close();
 			}			
 		    
+		}
+		
+		public static int AddGame(){
+			return ++RunningGames;
+		}
+		
+		public static int RemoveGame(){
+			RunningGames=--RunningGames>0?RunningGames:0;
+			
+			return RunningGames;
+		}
+		
+		public static int getRunningGames(){
+			
+			return RunningGames;
+		}
+
+		public static void SetNoMoreGames() {
+			noMoreGames=true;
+			
+		}
+		
+		public static boolean NoMoreGames() {
+			return noMoreGames;
+			
 		}
 
 }

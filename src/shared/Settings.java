@@ -63,6 +63,7 @@ public abstract class Settings {
 	    			in = null;
 	    			Messages.error("Can't find Properties file " + propertiesFilename.toString()+ "."
 	    					+ " Using defaults.");
+	    			saveSettings();
 	    		} catch (java.io.IOException e) {
 	    			Messages.error("Can't read settings from Properies file. " + propertiesFilename.toString()
 	    					+ "Using defaults.");

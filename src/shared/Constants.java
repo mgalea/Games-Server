@@ -27,6 +27,9 @@ public interface Constants {
 
     public static final int MAX_WOLF_CRIES = 3;
     
+    static double MAX_STAKE = 1.00;
+    static String DEFAULT_NAME = "SUPER MARIO" ;
+    
     public final int MAX_PLAYERS = 100;
     public final int MAX_CARDS = 4;
     

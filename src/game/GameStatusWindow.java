@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -14,58 +13,38 @@ import javax.swing.JFrame;
 import shared.ErrorMessages;
 import shared.OverallStatusPane;
 
-public class BackOffice {
+public class GameStatusWindow {
 	
-    protected static String windowName = "BINGO Server";
-    protected static String controlPaneTitle = "Game Default Parameters";
+    protected static String windowName = "BINGO Game: ";
+    protected static String controlPaneTitle = "Game Parameters";
     protected static String statusPaneTitle = "Game Status";
     
-    
+	
 	private boolean DEBUG=true;
 	
 	
-public BackOffice() throws IOException{
+public GameStatusWindow(Game game) throws IOException{
     
-    String hostname = null;
-	
 
-        JFrame frame = new JFrame(windowName);
-
-        
+    JFrame frame = new JFrame(windowName+game.gameID);
 	if (DEBUG) {
-	    System.out.println("Created JFrame.");
+	    System.out.println("Created Game Window.");
 	}
 	
 	Container container = frame.getContentPane();
 	
 	if (DEBUG) {
-	    System.out.println("Got content pane.");
+	    System.out.println("Got GAME content pane.");
 	}
 	//b.setHgap(5); //use rigid area instead.
 	//b.setVgap(5); //use rigid area instead.
 	
-	try {
-		
-	    hostname = InetAddress.getLocalHost().getHostName();
-	    System.out.println("HOST:"+hostname);
-
-	} catch (IOException e) {
-	    ErrorMessages.error("Problems starting the BINGO server.", e);
-	}    
 	
-/*
-	OverallStatusPane statusPane = new OverallStatusPane();
-	if (DEBUG) {
-	    System.out.println("Created status pane.");
-	}
-*/
 	
-	GameServerSettings settings = new GameServerSettings();  
-	
-	ControlPane controlPane = new ControlPane(hostname, settings);
+	GameParametersPane gameParamtersPane = new GameParametersPane(game);
 	
 	if (DEBUG) {
-	    System.out.println("Created control pane.");
+	    System.out.println("Created game paramters  pane.");
 	}
 	
 	OverallStatusPane statusPane = new OverallStatusPane();
@@ -75,7 +54,8 @@ public BackOffice() throws IOException{
 
         frame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
-		    System.exit(0);
+		    frame.setVisible(false); //you can't see me!
+		    frame.dispose(); //Destroy the JFrame object
 		} 
 	    });
        
@@ -86,13 +66,14 @@ public BackOffice() throws IOException{
 
 	
 	container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-	controlPane.setAlignmentX(0.5f);
-	container.add(controlPane); 
+	gameParamtersPane.setAlignmentX(0.5f);
+	container.add(gameParamtersPane); 
 	
 	
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
-	    System.exit(0);
+	    frame.setVisible(false);
+	    frame.dispose();
 	} 
     });
 	
@@ -103,7 +84,7 @@ public BackOffice() throws IOException{
 
 	statusPane.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
 	container.add(statusPane);
-    	
+	
         frame.pack(); 
         
 	
