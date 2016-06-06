@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-
+import GUI.BackOffice;
 import shared.*;
 
 public class ControlPane extends JPanel

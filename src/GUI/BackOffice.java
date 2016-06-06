@@ -1,4 +1,4 @@
-package game;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -11,8 +11,9 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
+import game.ControlPane;
+import game.GameServerSettings;
 import shared.ErrorMessages;
-import shared.OverallStatusPane;
 
 public class BackOffice {
 	

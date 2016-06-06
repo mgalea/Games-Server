@@ -2,6 +2,7 @@ package game;
 
 import java.io.IOException;
 
+import GUI.GameStatusWindow;
 import shared.*;
 import shared.GAME_TYPE;
 

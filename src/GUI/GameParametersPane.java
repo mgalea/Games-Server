@@ -1,11 +1,11 @@
-package game;
+package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-
+import game.Game;
 import shared.*;
 
 public class GameParametersPane extends JPanel

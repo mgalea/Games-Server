@@ -1,4 +1,4 @@
-package game;
+package GUI;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,8 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
+import game.Game;
 import shared.ErrorMessages;
-import shared.OverallStatusPane;
 
 public class GameStatusWindow {
 	
