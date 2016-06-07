@@ -16,7 +16,7 @@ public class GameSettings extends Settings implements Constants {
 /* ********** DEFAULT  VALUES  ***************** */
     private long delay = FIVE_SECONDS;
     private long countDown = ONE_MINUTE;
-    private int maxPlayers = MAX_PLAYERS;
+    private int maxGamePlayers = MAX_PLAYERS;
     private int maxCards = MAX_CARDS;
     private double stake=MAX_STAKE;
     private String name=DEFAULT_NAME;    
@@ -27,10 +27,12 @@ public class GameSettings extends Settings implements Constants {
     private String stakeName= "stake";    
     private String delayName = "ball_delay";
     private String countDownName = "count_down";
-    private String maxPlayersName = "max_players";
+    private String maxGamePlayersName = "max_players";
     private String maxCardsName = "max_cards";
     private String lastGameNumber = "last_game_number";
 
+
+    
     
 /* *********** CONSTRUCTORS    ************** */   
     public GameSettings() {
@@ -46,7 +48,7 @@ public class GameSettings extends Settings implements Constants {
     defaults.put(countDownName, new Long(countDown).toString());
 	defaults.put(delayName, new Long(delay).toString());
 	defaults.put(countDownName, new Long(countDown).toString());
-	defaults.put(maxPlayersName, new Integer(maxPlayers).toString());
+	defaults.put(maxGamePlayersName, new Integer(maxGamePlayers).toString());
 	defaults.put(maxCardsName, new Integer(maxCards).toString());
 	defaults.put(lastGameNumber, Long.toString(gameNumber));
     }
@@ -57,7 +59,7 @@ public class GameSettings extends Settings implements Constants {
 		stake = Double.parseDouble(properties.getProperty(stakeName));
 	    delay = Long.parseLong(properties.getProperty(delayName));
 	    countDown = Long.parseLong(properties.getProperty(countDownName));
-	    maxPlayers = Integer.parseInt(properties.getProperty(maxPlayersName));
+	    maxGamePlayers = Integer.parseInt(properties.getProperty(maxGamePlayersName));
 	    maxCards = Integer.parseInt(properties.getProperty(maxCardsName));
 	} catch (NumberFormatException e) {
 	    // we don't care if the property was of the wrong format,
@@ -72,7 +74,7 @@ public class GameSettings extends Settings implements Constants {
     properties.put(delayName, new Long(delay).toString());
 	properties.put(countDownName, new Long(countDown).toString());
 	properties.put(maxCardsName, new Integer(maxCards).toString());
-	properties.put(maxPlayersName, new Integer(maxPlayers).toString());
+	properties.put(maxGamePlayersName, new Integer(maxGamePlayers).toString());
 	
     }
 
@@ -82,7 +84,7 @@ public class GameSettings extends Settings implements Constants {
         	   + "stake=" + stake + ","
                + "delay=" + delay + ","
                + "countDown=" + countDown + ","
-               + "maxPlayers=" + maxPlayers + ","
+               + "maxGamePlayers=" + maxGamePlayers + ","
                + "maxCards=" + maxCards + "]";
     }
 
@@ -93,7 +95,7 @@ public class GameSettings extends Settings implements Constants {
     }
     
     public void setMaxGamePlayers(int maxPlayers) {
-	this.maxPlayers = maxPlayers;
+	this.maxGamePlayers = maxPlayers;
 	saveSettings();
     }
     
@@ -133,7 +135,7 @@ public class GameSettings extends Settings implements Constants {
     }
 
     public int getMaxGamePlayers() {
-	return maxPlayers;
+	return maxGamePlayers;
     }
 
 

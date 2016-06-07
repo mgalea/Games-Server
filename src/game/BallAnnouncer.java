@@ -11,14 +11,15 @@ import shared.*;
 
 class BallAnnouncer extends Thread  {
 
-    private bingo game;
+    private Bingo game;
+    
 	SocketGate serverSockets=null;
     EventLog ballLog=new EventLog("ball.log");
     private long delay;
 	
     //BallRandomizer bagOfBalls = new BallRandomizer();
 
-    BallAnnouncer(bingo new_game) {
+    BallAnnouncer(Bingo new_game) {
         super("Ball Announcer for Game Event "+new_game.gameID);
         this.game = new_game;
         delay=game.getBallDelay();

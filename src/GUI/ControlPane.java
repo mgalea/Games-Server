@@ -213,7 +213,7 @@ public class ControlPane extends JPanel
         switch (e.getActionCommand()){
         
         case go:			
-				bingo bingoGame = new bingo (GAME_TYPE.BINGO90,settings);	  
+				Bingo bingoGame = new Bingo (GAME_TYPE.BINGO90,settings);	  
 				bingoGame.run();
     	        stopButton.setEnabled(true);
     	    

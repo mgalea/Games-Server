@@ -13,7 +13,7 @@ public class GameParametersPane extends JPanel
 	private static final long serialVersionUID = 3464448451679036199L;
 
 	protected static final String stop = 
-    		"Stop Game";
+    		"Start/Stop Game";
     
     protected static final String nameString = 
     		"Name of the Game:";   
@@ -44,13 +44,13 @@ public class GameParametersPane extends JPanel
 
     protected JButton stopButton;
 
-	private GameSettings settings;
+	private Bingo settings;
     
-    public GameParametersPane(GameSettings gameSettings) {
+    public GameParametersPane(Bingo bingo) {
 		// TODO Auto-generated constructor stub
 	super(false);
 
-	this.settings=gameSettings;
+	this.settings=bingo;
 
 	    // create the properties fields
 	
@@ -83,7 +83,7 @@ public class GameParametersPane extends JPanel
     stopButton = new JButton(stop);
 	stopButton.setMnemonic('s');
 	stopButton.setActionCommand(stop);
-	stopButton.setEnabled(false);
+	stopButton.setEnabled(true);
 
             // Register the listeners
 	stopButton.addActionListener(this);
@@ -128,7 +128,21 @@ public class GameParametersPane extends JPanel
 	add(Box.createRigidArea(new Dimension(20, 20)));
     }
 
+ public void actionPerformed(ActionEvent e) {
+    	
+        switch (e.getActionCommand()){
+        
+        case stop:			
+        		settings.StopStartGame();
+    	        stopButton.setEnabled(true);   	    
+        	break;
+        	
+       default:
+       break;
+        }	
 
+        	
+        }
 
 
 
@@ -155,9 +169,7 @@ public class GameParametersPane extends JPanel
     	
     }
  
-    public void actionPerformed(ActionEvent e) {
-    	     	
-    }
+
     
     public Dimension getMaximumSize() {
 	Dimension d = getPreferredSize();

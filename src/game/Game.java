@@ -8,18 +8,15 @@ import shared.*;
  
 
 public class Game implements Constants,States,Serializable  {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 11111L;
 	public long gameID=0;
 	public int gameState=INITIALIZING;
 	public long delay = FIVE_SECONDS;		//DEFAULT delay between ball draws.
 	public String name="Nameless";
 	public double stake=1.0;
 	public long countDown=20;
-	public int maxGamePlayers=100;
+	public int maxGamePlayers;
 	public int maxCards=4;
 	
 	
@@ -48,13 +45,18 @@ public class Game implements Constants,States,Serializable  {
 		GameEvent gameEvent= new GameEvent();
 		
 		if(!Start.noMoreGames) // The noMoreGames is set to false when the server is to be turned down
-			gameID=gameEvent.setNewGameID(); // Give Me a Game Number.
-		
-	    /* Get a new GameID and Save it  */
-		this.gametype=type;
-		gameSettings=GameSettings;
-		
-			   
+			
+		/* Get a new GameID and Save it  */	
+		gameID=gameEvent.setNewGameID(); // Give Me a Game Number.
+    
+		gametype=type;
+		delay = GameSettings.getBallDelay();		
+		name=GameSettings.getGameName();
+		stake=GameSettings.getStake();
+		countDown=GameSettings.getCountDown();
+		maxGamePlayers=GameSettings.getMaxGamePlayers();
+		maxCards=GameSettings.getMaxCards();
+		   
 				if (gameID>0){
 					
 		        	Messages.info("GAME ID:"+Long.toString(gameID)+" OPEN");
@@ -72,15 +74,21 @@ public class Game implements Constants,States,Serializable  {
     			Messages.fatalError("Cannot create sockets.", e);
     		}
     			
-    		serverSockets.sendGameStatusMessage("Starting Game ID:"+gameID);   		
+    		//serverSockets.sendGameStatusMessage("Starting Game"+gameSettings.getGameName()+" ID:"+gameID);   		
 		
 	}
-
 	
 
 	 public String toString() {
 	        return "["
-	        	   + "gameID=" + gameID  + "]";
+	        	   + "gameID=" + gameID + ","
+	        	   + "name=" + name + ","
+	        	   + "stake=" + stake + ","
+	        	   + "delay=" + delay + ","
+	        	   + "countDown=" + countDown + ","
+	        	   + "maxGamePlayers=" + maxGamePlayers + ","
+	        	   + "maxCards=" + maxCards
+	        	   +"]";
 	    }
 
     
@@ -91,15 +99,44 @@ public void setGameOver() {
 	Messages.info("GAME OVER ID:"+Long.toString(gameID));
 	gameLog.save(Utilities.dateTimeStamp()+ " GAME OVER ID:"+Long.toString(gameID));
 	serverSockets.sendGameStatusMessage("GAME OVER ID:"+gameID);
-	this.gameInProgress=false;
+	gameInProgress=false;
 }
 
-
+public boolean StopStartGame() {
+	gameInProgress=!gameInProgress;
+	return gameInProgress;
+}
 		/* *********** GETTERS    ***************/  
 		
 		
 		public Object getGameID() {
 			return this;
+		}
+		
+		/* *********** GETTERS ************** */     
+	    public long getBallDelay() {
+		return delay;
+	    }
+	    
+	    public long getCountDown() {
+		return countDown;
+	    }
+
+	    public int getMaxGamePlayers() {
+		return maxGamePlayers;
+	    }
+
+
+	    public int getMaxCards() {
+		return maxCards;
+	    }
+
+		public String getGameName() {
+			return name;
+		}
+
+		public double getStake() {
+			return stake;
 		}
 
 		public boolean isCheckingForWinner() {
@@ -111,12 +148,6 @@ public void setGameOver() {
 				// TODO Auto-generated method stub
 				return this.gameInProgress;
 			}
-
-
-		public long getBallDelay(){
-			return gameSettings.getBallDelay();
-			
-		}
 
 		public static int AddGame(){
 			

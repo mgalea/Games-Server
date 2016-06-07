@@ -2,20 +2,22 @@ package game;
 
 import java.io.IOException;
 
-import GUI.GameStatusWindow;
+import GUI.BingoStatusWindow;
 import shared.*;
 
  
 
-public class bingo extends Game implements Runnable {
+public class Bingo extends Game implements Runnable {
 	
-	private volatile boolean gameInProgress=true;  // DECLARED VOLATILE but not needed at thread is synchronized.
-	
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8505348926003334577L;
+
 	/* GAME DEFUALTS   */
 
 	
-	public bingo(GAME_TYPE type, GameSettings GameSettings) {
+	public Bingo(GAME_TYPE type, GameSettings GameSettings) {
 		super(type,GameSettings);
 	
         switch (type){
@@ -28,8 +30,7 @@ public class bingo extends Game implements Runnable {
         	bagOfBalls = new BagofBalls(null,15,90,false); /* SYMBOLS ARE BINGO with 15 numbers under each symbol, non repeating ranges */	    
         	Messages.info(this.getClass().getName()+" GAME ID:"+Long.toString(gameID)+" OPEN");
         	break;
-        	
-        	
+        	        	
 		default:
 			break;
 		
@@ -42,7 +43,7 @@ public class bingo extends Game implements Runnable {
 public synchronized void run() {	    	
 
 try {
-	GameStatusWindow gameWindow=new GameStatusWindow(gameSettings);
+	new BingoStatusWindow(this);
 } catch (IOException e) {
 	// TODO Auto-generated catch block
 	e.printStackTrace();

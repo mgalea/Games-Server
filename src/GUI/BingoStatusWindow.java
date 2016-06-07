@@ -10,18 +10,18 @@ import javax.swing.*;
 import game.*;
 
 
-public class GameStatusWindow {
+public class BingoStatusWindow {
 	
-    protected static String windowName = "BINGO Game: ";
+    protected static String windowName = "BINGO: ";
     protected static String controlPaneTitle = "Game Parameters";
     protected static String statusPaneTitle = "Game Status";
     	
 	private boolean DEBUG=true;
 	
 	
-public GameStatusWindow(GameSettings gameSettings) throws IOException{
+public BingoStatusWindow(Bingo bingo) throws IOException{
     
-    JFrame frame = new JFrame(windowName+gameSettings.getGameName());
+    JFrame frame = new JFrame(windowName+bingo.getGameName());
 	if (DEBUG) {
 	    System.out.println("Created Game Window.");
 	}
@@ -36,10 +36,10 @@ public GameStatusWindow(GameSettings gameSettings) throws IOException{
 	
 	
 	
-	GameParametersPane gameParamtersPane = new GameParametersPane(gameSettings);
+	GameParametersPane gameParamtersPane = new GameParametersPane(bingo);
 	
 	if (DEBUG) {
-	    System.out.println("Created game paramters  pane.");
+	    System.out.println("Created game paramters  pane."+bingo.toString());
 	}
 	
 	OverallStatusPane statusPane = new OverallStatusPane();
