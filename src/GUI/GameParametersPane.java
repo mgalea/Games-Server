@@ -3,16 +3,16 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-
-import game.Game;
 import shared.*;
+import game.*;
 
 public class GameParametersPane extends JPanel
 			 implements ActionListener,Constants,
 				    FocusListener {
-    
-    protected static final String stop = 
+
+	private static final long serialVersionUID = 3464448451679036199L;
+
+	protected static final String stop = 
     		"Stop Game";
     
     protected static final String nameString = 
@@ -44,19 +44,19 @@ public class GameParametersPane extends JPanel
 
     protected JButton stopButton;
 
-	private Game settings;
+	private GameSettings settings;
     
-    public GameParametersPane(Game game) {
+    public GameParametersPane(GameSettings gameSettings) {
 		// TODO Auto-generated constructor stub
 	super(false);
 
-	this.settings=game;
+	this.settings=gameSettings;
 
 	    // create the properties fields
 	
     JLabel nameLabel = new JLabel(nameString, JLabel.LEFT);
     JLabel nameField = new JLabel(settings.getGameName(),JLabel.LEFT);
-    
+  
     
     JLabel stakeLabel = new JLabel(stakeString, JLabel.LEFT);
     JLabel stakeField = new JLabel(new Double(settings.getStake()).toString(),JLabel.LEFT);
@@ -70,7 +70,7 @@ public class GameParametersPane extends JPanel
 
 
     JLabel maxPlayersLabel = new JLabel(maxPlayersString, JLabel.LEFT);
-    JLabel maxPlayersField = new JLabel(new Integer(settings.getMaxPlayers()).toString(), JLabel.LEFT);
+    JLabel maxPlayersField = new JLabel(new Integer(settings.getMaxGamePlayers()).toString(), JLabel.LEFT);
 
 
     JLabel maxCardsLabel = new JLabel(maxCardsString, JLabel.LEFT);
@@ -80,7 +80,7 @@ public class GameParametersPane extends JPanel
 
 
 
-        stopButton = new JButton(stop);
+    stopButton = new JButton(stop);
 	stopButton.setMnemonic('s');
 	stopButton.setActionCommand(stop);
 	stopButton.setEnabled(false);
@@ -135,7 +135,6 @@ public class GameParametersPane extends JPanel
 	public void focusLost(FocusEvent e) {
 	//when a field loses the focus, generate an action event
 	JTextField source;
-	ActionEvent event;
 
 	source = (JTextField)(e.getComponent());
 	source.setBackground(Color.WHITE);
@@ -150,7 +149,6 @@ public class GameParametersPane extends JPanel
 
     public void focusGained(FocusEvent e) {
     	JTextField source;
-    	ActionEvent event;
     	System.out.println("Hey");
     	source = (JTextField)(e.getComponent());
     	source.setBackground(Color.YELLOW);

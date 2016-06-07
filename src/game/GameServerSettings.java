@@ -6,61 +6,49 @@ package game;
 
 import java.util.Properties;
 
-import javax.swing.JTextField;
-
 import shared.Settings;
 import shared.Constants;
 
 
-class GameServerSettings extends Settings implements Constants {
+public class GameServerSettings extends Settings implements Constants {
+
 
 
 /* ********** DEFAULT  VALUES  ***************** */
-    private long delay = FIVE_SECONDS;
-    private long countDown = ONE_MINUTE;
+
     private int maxPlayers = MAX_PLAYERS;
-    private int maxCards = MAX_CARDS;
-    private double stake=MAX_STAKE;
-    private String name=DEFAULT_NAME;    
+    private int maxGames = MAX_GAMES;
     public long gameNumber;
 
 /* *********** PROPERTY KEYS    ************** */    
-    private String gameName = "name";
-    private String stakeName= "stake";    
-    private String delayName = "ball_delay";
-    private String countDownName = "count_down";
+
     private String maxPlayersName = "max_players";
-    private String maxCardsName = "max_cards";
+    private String maxGamesName = "max_games";
     private String lastGameNumber = "last_game_number";
 
     
 /* *********** CONSTRUCTORS    ************** */   
     GameServerSettings() {
-        super("game.cfg", "Game Parameters Default Settings");
-	getSettings(); 
+        super("server.cfg", "Server Parameters Default Settings");
+        getSettings(); 
     }
 
 /* ***********  METHODS    ************** */ 
     
     protected void setDefaults(Properties defaults) {
-    defaults.put(gameName, name);
-    defaults.put(stakeName, new Double(stake).toString());
-    defaults.put(countDownName, new Long(countDown).toString());
-	defaults.put(delayName, new Long(delay).toString());
-	defaults.put(countDownName, new Long(countDown).toString());
+
+
 	defaults.put(maxPlayersName, new Integer(maxPlayers).toString());
-	defaults.put(maxCardsName, new Integer(maxCards).toString());
+	defaults.put(maxGamesName, new Integer(maxGames).toString());
 	defaults.put(lastGameNumber, Long.toString(gameNumber));
     }
 
     protected void updateSettingsFromProperties() {
 	try {
-		name = properties.getProperty(gameName);
-		stake = Double.parseDouble(properties.getProperty(stakeName));
-	    delay = Long.parseLong(properties.getProperty(delayName));
-	    countDown = Long.parseLong(properties.getProperty(countDownName));
+
+	    gameNumber = Long.parseLong(properties.getProperty(lastGameNumber));
 	    maxPlayers = Integer.parseInt(properties.getProperty(maxPlayersName));
-	    maxCards = Integer.parseInt(properties.getProperty(maxCardsName));
+	    maxGames = Integer.parseInt(properties.getProperty(maxGamesName));
 	} catch (NumberFormatException e) {
 	    // we don't care if the property was of the wrong format,
 	    // they've all got default values. So catch the exception
@@ -69,43 +57,31 @@ class GameServerSettings extends Settings implements Constants {
     }
 
     protected void updatePropertiesFromSettings() {
-    properties.put(gameName, name);
-    properties.put(stakeName, new Double(stake).toString());
-    properties.put(delayName, new Long(delay).toString());
-	properties.put(countDownName, new Long(countDown).toString());
-	properties.put(maxCardsName, new Integer(maxCards).toString());
+
+	properties.put(lastGameNumber, new Long(gameNumber).toString());
+	properties.put(maxGamesName, new Integer(maxGames).toString());
 	properties.put(maxPlayersName, new Integer(maxPlayers).toString());
 	
     }
 
     public String toString() {
         return "["
-        		+ "name=" + name + ","
-        	   + "stake=" + stake + ","
-               + "delay=" + delay + ","
-               + "countDown=" + countDown + ","
+
+               + "maxGames=" + maxGames + ","
                + "maxPlayers=" + maxPlayers + ","
-               + "maxCards=" + maxCards + "]";
+               + "gameNumber=" + gameNumber + "]";
     }
 
 /* *********** SETTERS    ***************/    
-    void setDelay(long delay) {
-	this.delay = delay;
-	saveSettings();
-    }
-    
-    void setMaxPlayers(int maxPlayers) {
+  
+ 
+    public void setMaxPlayers(int maxPlayers) {
 	this.maxPlayers = maxPlayers;
 	saveSettings();
     }
-    
-    void setMaxCards(int maxCards) {
-	this.maxCards = maxCards;
-	saveSettings();
-    }
-    
-    void setCountDown(long countDown) {
-	this.countDown = countDown;
+ 
+    public void setMaxGames(int maxGames) {
+	this.maxGames=maxGames;
 	saveSettings();
     }
     
@@ -114,41 +90,21 @@ class GameServerSettings extends Settings implements Constants {
 	saveSettings();
     }
     
-	public void setName(String nameField) {
-		this.name = nameField;
-		saveSettings();
-		
-	}
-	public void setStake(double stakeField) {
-		this.stake=stakeField;
-		saveSettings();
-	}
-    
+ 
 /* *********** GETTERS ************** */     
-    long getDelay() {
-	return delay;
-    }
-    
-    long getCountDown() {
-	return countDown;
-    }
-
-    int getMaxPlayers() {
+   int getMaxPlayers() {
 	return maxPlayers;
     }
 
 
-    int getMaxCards() {
-	return maxCards;
+    int getMaxGames() {
+	return maxGames;
     }
 
-	public String getGameName() {
-		return name;
-	}
+    public long getLastGame() {
+ 		return gameNumber;
+     }
 
-	public double getStake() {
-		return stake;
-	}
 
 
 

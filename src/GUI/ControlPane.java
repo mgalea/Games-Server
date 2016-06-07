@@ -1,17 +1,23 @@
-package game;
+package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
 
-import GUI.BackOffice;
+import javax.swing.*;
+
+
 import shared.*;
+import game.*;
 
 public class ControlPane extends JPanel
 			 implements ActionListener,Constants,
 				    FocusListener {
-    protected static final String go = 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9060708327884392826L;
+
+	protected static final String go = 
     		"Start a Bingo Game";
     
     protected static final String stop = 
@@ -52,14 +58,14 @@ public class ControlPane extends JPanel
     protected JButton stopButton;
     protected JButton noMoreButton;
     
-    GameServerSettings settings;
-	static GameEngineLauncher bingoLauncher,lottoLauncher,cardLauncher;
-
-    public ControlPane(String hostname, GameServerSettings Settings) {
+      
+    GameSettings settings=new GameSettings();
+	
+	public ControlPane(String hostname, GameSettings gameSettings) {
 	super(false);
-
-	this.settings=Settings;
-
+	
+	this.settings=gameSettings;
+	
 	    // create the properties fields
 	
     JLabel nameLabel = new JLabel(nameString, JLabel.LEFT);
@@ -71,7 +77,7 @@ public class ControlPane extends JPanel
     stakeField.setActionCommand(stakeString);
 
     JLabel delayLabel = new JLabel(delayString, JLabel.LEFT);
-    delayField = new JTextField(new Long(settings.getDelay()/Constants.ONE_SECOND).toString());
+    delayField = new JTextField(new Long(settings.getBallDelay()/Constants.ONE_SECOND).toString());
     delayField.setActionCommand(delayString);
     
 
@@ -82,7 +88,7 @@ public class ControlPane extends JPanel
 
         JLabel maxPlayersLabel = new JLabel(maxPlayersString, JLabel.LEFT);
         maxPlayersField = new JTextField(new
- 	    Integer(settings.getMaxPlayers()).toString());
+ 	    Integer(settings.getMaxGamePlayers()).toString());
         maxPlayersField.setActionCommand(maxPlayersString);
 
         JLabel maxCardsLabel = new JLabel(maxCardsString, JLabel.LEFT);
@@ -182,7 +188,6 @@ public class ControlPane extends JPanel
     public void focusLost(FocusEvent e) {
 	//when a field loses the focus, generate an action event
 	JTextField source;
-	ActionEvent event;
 
 	source = (JTextField)(e.getComponent());
 	source.setBackground(Color.WHITE);
@@ -197,7 +202,6 @@ public class ControlPane extends JPanel
 
     public void focusGained(FocusEvent e) {
     	JTextField source;
-    	ActionEvent event;
     	System.out.println("Hey");
     	source = (JTextField)(e.getComponent());
     	source.setBackground(Color.YELLOW);
@@ -208,10 +212,9 @@ public class ControlPane extends JPanel
     	
         switch (e.getActionCommand()){
         
-        case go:
-         	        
-				bingoLauncher=new GameEngineLauncher(GAME_TYPE.BINGO90);			
-				bingoLauncher.start();			          	     
+        case go:			
+				bingo bingoGame = new bingo (GAME_TYPE.BINGO90,settings);	  
+				bingoGame.run();
     	        stopButton.setEnabled(true);
     	    
         	break;
@@ -223,7 +226,7 @@ public class ControlPane extends JPanel
         	break;
         	
         case nameString:
-    	    settings.setName(nameField.getText());    	    
+    	    settings.setGameName(nameField.getText());    	    
     	    break;
     	    
         case stakeString:
@@ -240,7 +243,7 @@ public class ControlPane extends JPanel
     	    break;
     	    
         case maxPlayersString:
-        	settings.setMaxPlayers(Integer.parseInt(maxPlayersField.getText()));   	    
+        	settings.setMaxGamePlayers(Integer.parseInt(maxPlayersField.getText()));   	    
     	    break;
     	    
         case maxCardsString:
@@ -257,6 +260,7 @@ public class ControlPane extends JPanel
 	d.width = Short.MAX_VALUE;
 	return d;
     }
+
 
 
 }

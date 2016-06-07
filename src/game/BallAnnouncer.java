@@ -6,22 +6,22 @@ import java.io.IOException;
 import shared.*;
 
 
-
 /** A standard Bingo/lottery Ball announcer for traditional type of games **/
 
 
 class BallAnnouncer extends Thread  {
 
-    private Game game;
+    private bingo game;
 	SocketGate serverSockets=null;
     EventLog ballLog=new EventLog("ball.log");
-
+    private long delay;
 	
     //BallRandomizer bagOfBalls = new BallRandomizer();
 
-    BallAnnouncer(Game new_game) {
+    BallAnnouncer(bingo new_game) {
         super("Ball Announcer for Game Event "+new_game.gameID);
         this.game = new_game;
+        delay=game.getBallDelay();
         
         try
         {
@@ -42,11 +42,11 @@ class BallAnnouncer extends Thread  {
 
 	        } catch (NoMoreBallsException e) {
 	        	game.setGameOver(); 
-	        	Start.RemoveGame();
+	        	Game.RemoveGame();
 	        }
 	    }
 	    try {
-		wait(game.getBallDelay());
+		wait(delay);
 	    } catch (InterruptedException e) { }
         }
     }

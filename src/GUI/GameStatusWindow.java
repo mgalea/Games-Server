@@ -1,32 +1,27 @@
 package GUI;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
-import java.net.InetAddress;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 
-import game.Game;
-import shared.ErrorMessages;
+import javax.swing.*;
+
+
+import game.*;
+
 
 public class GameStatusWindow {
 	
     protected static String windowName = "BINGO Game: ";
     protected static String controlPaneTitle = "Game Parameters";
     protected static String statusPaneTitle = "Game Status";
-    
-	
+    	
 	private boolean DEBUG=true;
 	
 	
-public GameStatusWindow(Game game) throws IOException{
+public GameStatusWindow(GameSettings gameSettings) throws IOException{
     
-
-    JFrame frame = new JFrame(windowName+game.gameID);
+    JFrame frame = new JFrame(windowName+gameSettings.getGameName());
 	if (DEBUG) {
 	    System.out.println("Created Game Window.");
 	}
@@ -41,7 +36,7 @@ public GameStatusWindow(Game game) throws IOException{
 	
 	
 	
-	GameParametersPane gameParamtersPane = new GameParametersPane(game);
+	GameParametersPane gameParamtersPane = new GameParametersPane(gameSettings);
 	
 	if (DEBUG) {
 	    System.out.println("Created game paramters  pane.");

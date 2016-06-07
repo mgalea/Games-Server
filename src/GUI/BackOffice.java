@@ -1,24 +1,21 @@
 package GUI;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.InetAddress;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 
-import game.ControlPane;
-import game.GameServerSettings;
-import shared.ErrorMessages;
+import javax.swing.*;
+
+import shared.*;
+import game.*;
+
+
 
 public class BackOffice {
 	
     protected static String windowName = "BINGO Server";
-    protected static String controlPaneTitle = "Game Default Parameters";
+    public static String controlPaneTitle = "Game Default Parameters";
     protected static String statusPaneTitle = "Game Status";
     
     
@@ -29,21 +26,12 @@ public BackOffice() throws IOException{
     
     String hostname = null;
 	
-
         JFrame frame = new JFrame(windowName);
 
         
 	if (DEBUG) {
 	    System.out.println("Created JFrame.");
 	}
-	
-	Container container = frame.getContentPane();
-	
-	if (DEBUG) {
-	    System.out.println("Got content pane.");
-	}
-	//b.setHgap(5); //use rigid area instead.
-	//b.setVgap(5); //use rigid area instead.
 	
 	try {
 		
@@ -52,16 +40,18 @@ public BackOffice() throws IOException{
 
 	} catch (IOException e) {
 	    ErrorMessages.error("Problems starting the BINGO server.", e);
-	}    
+	}   
 	
-/*
-	OverallStatusPane statusPane = new OverallStatusPane();
+	
+	
+	Container container = frame.getContentPane();
+	
 	if (DEBUG) {
-	    System.out.println("Created status pane.");
+	    System.out.println("Got content pane.");
 	}
-*/
 	
-	GameServerSettings settings = new GameServerSettings();  
+ 
+	GameSettings settings = new GameSettings();  
 	
 	ControlPane controlPane = new ControlPane(hostname, settings);
 	

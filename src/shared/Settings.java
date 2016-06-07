@@ -38,7 +38,16 @@ public abstract class Settings {
 /*  SETTERS  */
 /* These methods are declared abstract so they can be applied specific to the application */
     
-    abstract protected void setDefaults(Properties defaults) ;
+    public Settings(String propertiesFilename) {
+    	String folder = System.getProperty("user.dir");
+	    String filesep = System.getProperty("file.separator");
+    	
+	    this.propertiesFilename = folder+ filesep+propertiesFilename;;
+	    this.propertiesDescription = null;
+    
+	}
+
+	abstract protected void setDefaults(Properties defaults) ;
     abstract protected void updatePropertiesFromSettings() ;
     abstract protected void updateSettingsFromProperties() ;
  

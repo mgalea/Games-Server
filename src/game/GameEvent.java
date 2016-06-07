@@ -10,7 +10,7 @@ import shared.*;
 import java.util.Properties;
 import shared.Settings;
 
-class GameEventSettings extends Settings {
+class GameEvent extends Settings {
 	
 	public long GameID=0;
     public long lastGameID=0;  /*DEFAULT*/
@@ -21,8 +21,8 @@ class GameEventSettings extends Settings {
 
     
 /* *********** CONSTRUCTORS    ************** */   
-    GameEventSettings() {
-        super("game.events", "Game Events");
+    GameEvent() {
+        super("gameID.cfg");
 	getSettings(); 
     }
 
@@ -37,7 +37,7 @@ class GameEventSettings extends Settings {
 	try {
 	    lastGameID = Long.parseLong(properties.getProperty(GameIDString));
 	} catch (NumberFormatException e) {
-			Messages.fatalError("CANNOT create or Access the game Events",e);
+			Messages.fatalError("CANNOT create or Access the gameID file",e);
 	}
     }
 

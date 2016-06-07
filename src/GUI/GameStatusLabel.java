@@ -1,10 +1,15 @@
 package GUI;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.net.InetAddress;
+
 import javax.swing.*;
 
-import shared.GameListener;
-import shared.GameListenerThread;
+import shared.*;
+import game.*;
+
 
 // Used by the game keeper to show its current status.
 // Not thread-safe, so call updateStatus from the AWT thread. XXX
