@@ -1,6 +1,12 @@
 package shared;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 import game.PlayerRecord;
@@ -17,6 +23,7 @@ public class SocketGate extends ListenerThread {
 
     private MulticastSocket socket;
 
+    
     public SocketGate(String groupString) throws UnknownHostException, IOException {
 		super(groupString);
         socket = new MulticastSocket(Constants.portNumber);
@@ -28,8 +35,8 @@ public class SocketGate extends ListenerThread {
 	}
 
 
-    public void sendBall(Ball b) {
-        sendBytes(b.getBytes(), ballListeningGroup);
+    public void sendByteRecord(byte[] record) {
+        sendBytes(record, gameListeningGroup);
     }
     
     public void sendCard(Card c) {
@@ -53,7 +60,7 @@ public class SocketGate extends ListenerThread {
     }
     
     
-    private void sendBytes(byte[] data, InetAddress group) {
+    public void sendBytes(byte[] data, InetAddress group) {
         DatagramPacket packet = new DatagramPacket(data, data.length, group,
                                                    Constants.portNumber);
         try {
@@ -62,6 +69,42 @@ public class SocketGate extends ListenerThread {
             Messages.error("Game Server Socket Error.", e);
         }
     }
+
+    
+	ByteArrayOutputStream bos = null;
+	ObjectOutput out = null;
+
+		public byte[] objtoBytes(Object obj){
+	   
+  byte[] classbytes=null;
+  bos=new ByteArrayOutputStream();
+  
+	try {
+	  try {
+		out = new ObjectOutputStream(bos);
+	  } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}   
+	  out.writeObject(obj);
+
+		classbytes = bos.toByteArray();
+		return classbytes;
+	  
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}finally {
+		  try {
+			    if (out != null) {
+			      out.close();
+			    }
+			  } catch (IOException ex) {
+			    // ignore close exception
+			  }
+	}
+	return classbytes;
+   }
 
 	
 }

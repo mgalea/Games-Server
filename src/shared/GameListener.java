@@ -5,4 +5,5 @@ package shared;
 // of the game keeper
 public interface GameListener extends Listener {
     public void updateStatus(String message);
+    public void updateStatus(byte[] message);
 }

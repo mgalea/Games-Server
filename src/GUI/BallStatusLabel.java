@@ -13,12 +13,12 @@ import game.*;
 
 // Used by the game keeper to show its current status.
 // Not thread-safe, so call updateStatus from the AWT thread. XXX
-public class GameStatusLabel extends JLabel implements GameListener {
+public class BallStatusLabel extends JLabel implements GameListener {
 //public class GameStatusLabel extends Label implements GameListener {
     static protected String initialStatusString = 
 	    "Watch this space for game status information.";
 
-    public GameStatusLabel() {
+    public BallStatusLabel() {
 	super(initialStatusString, LEFT);
 
         try {
@@ -30,13 +30,14 @@ public class GameStatusLabel extends JLabel implements GameListener {
     }
 
     public void updateStatus(String message) {
-	setText(message);
+	setText("OK:"+message);
     }
 
+	public void updateStatus(byte[] message) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    public void updateStatus(byte[] message) {
- 
-    }
 
 
 		

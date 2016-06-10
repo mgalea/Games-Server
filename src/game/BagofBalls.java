@@ -21,7 +21,6 @@ class BagofBalls implements Constants {
     	    balls.addElement(new Ball(j,range,Symbols,repetitive));
         }
 
-
     // PENDING: the compiler wanted this public...why?
     
     public Ball getNext(long gameID) throws NoMoreBallsException {    	

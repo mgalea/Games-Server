@@ -35,4 +35,39 @@ public abstract class ListenerThread extends Thread implements Constants{
 	public void setGroupString(String groupString) {
 		this.groupString = groupString;
 	}
+
+	
+	public Object bytestoObj(byte [] rcvd){
+			ByteArrayInputStream bis = new ByteArrayInputStream(rcvd);
+			
+				ObjectInput in = null;
+				Object o = null;
+				
+				try {
+					in = new ObjectInputStream(bis);
+					o = in.readObject();					
+					System.out.println(o.toString());
+						
+				} catch (IOException e) {
+					Messages.error("Cannot Read Object for Listener Thread.");
+	
+					} catch (ClassNotFoundException e) {
+						Messages.error("This is not an Object.");
+					} 
+					finally {
+						try {
+							bis.close();
+							} catch (IOException ex) {
+									// ignore close exception
+							}
+						try {
+							if (in != null) {
+								in.close();
+							}
+						} catch (IOException ex) {
+								// ignore close exception
+						}
+					}
+				return o;
+			}
 }

@@ -1,6 +1,7 @@
 package game;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import GUI.BingoStatusWindow;
 import shared.*;
@@ -8,7 +9,7 @@ import shared.*;
  
 
 public class Bingo extends Game implements Runnable {
-	
+	Vector<BallRecord> ballRecords;
 	/**
 	 * 
 	 */
@@ -24,11 +25,12 @@ public class Bingo extends Game implements Runnable {
         
         case BINGO75:  
         	bagOfBalls = new BagofBalls("BINGO",15,75,false); /* SYMBOLS ARE BINGO with 15 numbers under each symbol, non repeating ranges */
+            ballRecords = new Vector<BallRecord>(75);
         	break;
         	
         case BINGO90:  
-        	bagOfBalls = new BagofBalls(null,15,90,false); /* SYMBOLS ARE BINGO with 15 numbers under each symbol, non repeating ranges */	    
-        	Messages.info(this.getClass().getName()+" GAME ID:"+Long.toString(gameID)+" OPEN");
+        	bagOfBalls = new BagofBalls(null,15,90,false); /* SYMBOLS ARE BINGO with 15 numbers under each symbol, non repeating ranges */
+        	ballRecords = new Vector<BallRecord>(90);
         	break;
         	        	
 		default:
@@ -52,11 +54,7 @@ try {
 if(gameState==READY) {
 	switch(gametype){
 	
-	case DECK:
-		showCard=new ShowCard(this);
-		showCard.start();
-		break;
-		
+	
 		
 	default:	
 		ballAnnounce=new BallAnnouncer(this);

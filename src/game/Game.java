@@ -19,7 +19,6 @@ public class Game implements Constants,States,Serializable  {
 	public int maxGamePlayers;
 	public int maxCards=4;
 	
-	
 	private volatile boolean gameInProgress=true;  // DECLARED VOLATILE but not needed at thread is synchronized.
 	
 	SocketGate serverSockets=null;
